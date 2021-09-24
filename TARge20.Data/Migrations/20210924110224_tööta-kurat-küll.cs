@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace TARge20.Data.Migrations
 {
-    public partial class minetööle : Migration
+    public partial class töötakuratküll : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -23,6 +23,28 @@ namespace TARge20.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Kindergartens", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Absents",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Reason = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ChildId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    KindergartenId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Absents", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Absents_Kindergartens_KindergartenId",
+                        column: x => x.KindergartenId,
+                        principalTable: "Kindergartens",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -137,6 +159,26 @@ namespace TARge20.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Menus",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Breakfast = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Lunch = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    KitchenId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Menus", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Menus_Kitchens_KitchenId",
+                        column: x => x.KitchenId,
+                        principalTable: "Kitchens",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Groups",
                 columns: table => new
                 {
@@ -189,6 +231,11 @@ namespace TARge20.Data.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Absents_KindergartenId",
+                table: "Absents",
+                column: "KindergartenId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Children_QueueId",
                 table: "Children",
                 column: "QueueId");
@@ -219,6 +266,11 @@ namespace TARge20.Data.Migrations
                 column: "EmployeeId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Menus_KitchenId",
+                table: "Menus",
+                column: "KitchenId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Parents_ChildId",
                 table: "Parents",
                 column: "ChildId");
@@ -232,22 +284,28 @@ namespace TARge20.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "Absents");
+
+            migrationBuilder.DropTable(
                 name: "Groups");
 
             migrationBuilder.DropTable(
                 name: "JobTitles");
 
             migrationBuilder.DropTable(
-                name: "Kitchens");
+                name: "Menus");
 
             migrationBuilder.DropTable(
                 name: "Parents");
 
             migrationBuilder.DropTable(
-                name: "Employee");
+                name: "Kitchens");
 
             migrationBuilder.DropTable(
                 name: "Children");
+
+            migrationBuilder.DropTable(
+                name: "Employee");
 
             migrationBuilder.DropTable(
                 name: "Queues");

@@ -19,6 +19,7 @@ namespace TARge20.Core.Domain
         public int ContactNumber { get; set; }
         public string ContactEmail { get; set; }
 
+        public List<Absent> Absents { get; set; }
         public List<Queue> queues { get; set; }
         public List<Employee> Employee { get; set; }
 

@@ -6,15 +6,15 @@ using System.Text;
 
 namespace TARge20.Core.Domain
 {
-   public class Kitchen
+    public class Menu
     {
-        [ForeignKey("Id")]
-        [Key]
-        public Guid Id { get; set; }
-        public string Menu { get; set; }
-        public string FoodItem { get; set; }
-        public int Amount { get; set; }
 
-        public List<Menu> Menus { get; set; }
+        [Key]
+        [ForeignKey("Id")]
+        public Guid Id { get; set; }
+
+        public string Breakfast {get;set;}
+        public string Lunch { get; set; }
+
     }
 }

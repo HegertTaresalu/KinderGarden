@@ -30,7 +30,9 @@ namespace TARge20.Data
         public DbSet <Child> Children { get; set; }
 
      
+        public DbSet<Menu> Menus { get; set; }
 
+        public DbSet<Absent> Absents { get; set; }
 
 
 

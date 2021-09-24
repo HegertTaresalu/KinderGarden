@@ -10,8 +10,8 @@ using TARge20.Data;
 namespace TARge20.Data.Migrations
 {
     [DbContext(typeof(TARge20DbContext))]
-    [Migration("20210923191126_mine-tööle")]
-    partial class minetööle
+    [Migration("20210924110224_tööta-kurat-küll")]
+    partial class töötakuratküll
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,6 +20,34 @@ namespace TARge20.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.9")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("TARge20.Core.Domain.Absent", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ChildId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("KindergartenId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Reason")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("KindergartenId");
+
+                    b.ToTable("Absents");
+                });
 
             modelBuilder.Entity("TARge20.Core.Domain.Child", b =>
                 {
@@ -204,6 +232,28 @@ namespace TARge20.Data.Migrations
                     b.ToTable("Kitchens");
                 });
 
+            modelBuilder.Entity("TARge20.Core.Domain.Menu", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Breakfast")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("KitchenId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Lunch")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("KitchenId");
+
+                    b.ToTable("Menus");
+                });
+
             modelBuilder.Entity("TARge20.Core.Domain.Parent", b =>
                 {
                     b.Property<Guid>("Id")
@@ -260,6 +310,13 @@ namespace TARge20.Data.Migrations
                     b.ToTable("Queues");
                 });
 
+            modelBuilder.Entity("TARge20.Core.Domain.Absent", b =>
+                {
+                    b.HasOne("TARge20.Core.Domain.Kindergarten", null)
+                        .WithMany("Absents")
+                        .HasForeignKey("KindergartenId");
+                });
+
             modelBuilder.Entity("TARge20.Core.Domain.Child", b =>
                 {
                     b.HasOne("TARge20.Core.Domain.Queue", null)
@@ -299,6 +356,13 @@ namespace TARge20.Data.Migrations
                         .HasForeignKey("EmployeeId");
                 });
 
+            modelBuilder.Entity("TARge20.Core.Domain.Menu", b =>
+                {
+                    b.HasOne("TARge20.Core.Domain.Kitchen", null)
+                        .WithMany("Menus")
+                        .HasForeignKey("KitchenId");
+                });
+
             modelBuilder.Entity("TARge20.Core.Domain.Parent", b =>
                 {
                     b.HasOne("TARge20.Core.Domain.Child", null)
@@ -331,9 +395,16 @@ namespace TARge20.Data.Migrations
 
             modelBuilder.Entity("TARge20.Core.Domain.Kindergarten", b =>
                 {
+                    b.Navigation("Absents");
+
                     b.Navigation("Employee");
 
                     b.Navigation("queues");
+                });
+
+            modelBuilder.Entity("TARge20.Core.Domain.Kitchen", b =>
+                {
+                    b.Navigation("Menus");
                 });
 
             modelBuilder.Entity("TARge20.Core.Domain.Queue", b =>

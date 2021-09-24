@@ -14,6 +14,11 @@ namespace TARge20.Core.Domain
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public Guid IdentityNumber { get; set; }
+        public enum Gender {
+            Male,
+            Female,
+            Unknown
+        }
         public int Age { get; set; }
         public string StayingSince { get; set; }
 
